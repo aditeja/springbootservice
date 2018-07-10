@@ -1,2 +1,2 @@
-# N26-Code-Challenge
+# Spring Boot Service
 Java Spring Boot microservice
