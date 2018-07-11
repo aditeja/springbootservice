@@ -26,7 +26,8 @@ public class TransactionServiceImpl implements TransactionService {
         logger.info("In TransactionService method - createTransaction");
         try {
             Long duration = transaction.getTimestamp()+ Constant.TIME_LIMIT - System.currentTimeMillis();
-            map.put(transaction.getId(),transaction.getAmount(),ExpirationPolicy.ACCESSED,duration,TimeUnit.MILLISECONDS);
+            map.put(transaction.getId(),transaction.getAmount(),ExpirationPolicy.CREATED,duration,TimeUnit
+                    .MILLISECONDS);
         } catch (Exception ex) {
             logger.error("An exception was thrown during save ", ex);
             throw new SpringBootServiceException("Error while saving transaction");

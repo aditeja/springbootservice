@@ -9,13 +9,6 @@ public class Transaction {
     private Long timestamp;
 
     /**
-     * Instantiates a Transaction.
-     */
-    public Transaction() {
-        // Default Constructor
-    }
-
-    /**
      * Gets amount.
      * @return Value of amount.
      */

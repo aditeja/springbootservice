@@ -12,14 +12,6 @@ public class Statistics {
     private Double min;
     private Long count;
 
-
-    /**
-     * Instantiates a Statistics.
-     */
-    public Statistics() {
-        // Default Constructor
-    }
-
     /**
      * Instantiates a new Statistics.
      * Returns statistics calculated from transaction amounts in Expiring map.

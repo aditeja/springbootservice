@@ -5,7 +5,7 @@ package com.springbootservice.util;
  */
 public final class Constant {
     private Constant() {
-        //Default constructor
+        //Private constructor to hide the implicit public one
     }
     public static final Long TIME_LIMIT = Long.valueOf(60000); //in milliseconds
     public static final int SCHEDULER_POLLING_RATE_MILLS = 1;
