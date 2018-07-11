@@ -2,6 +2,8 @@ package com.springbootservice.model;
 
 import net.jodah.expiringmap.ExpiringMap;
 
+import java.util.Map;
+
 /**
  * The type Statistics.
  */
@@ -14,9 +16,15 @@ public class Statistics {
 
     /**
      * Instantiates a new Statistics.
+     */
+    public Statistics() {
+    }
+
+    /**
+     * Instantiates a new Statistics.
      * Returns statistics calculated from transaction amounts in Expiring map.
      */
-    public  Statistics(ExpiringMap<Long,Double> map) {
+    public Statistics(Map<Long,Double> map) {
         this.setCount((long) map.values().size());
         Double defaultValue = Double.valueOf(0);
         this.setSum(map.values().stream().mapToDouble(Double::doubleValue).sum());

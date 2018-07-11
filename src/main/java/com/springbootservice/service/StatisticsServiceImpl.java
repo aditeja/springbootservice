@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 
+import java.util.ConcurrentModificationException;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * The type Statistics service.
  */
@@ -36,6 +40,12 @@ public class StatisticsServiceImpl implements StatisticsService {
      */
     @Scheduled(fixedRate = Constant.SCHEDULER_POLLING_RATE_MILLS)
     private void generateStatistics() {
-        statistics = new Statistics(transactionService.map);
+        try {
+            Map<Long,Double> map = new HashMap<>(transactionService.map);
+            statistics = new Statistics(map);
+        } catch (ConcurrentModificationException ex) {
+            logger.error("An exception was thrown while updating statistics", ex);
+            throw new SpringBootServiceException("Error while updating statistics");
+        }
     }
 }
