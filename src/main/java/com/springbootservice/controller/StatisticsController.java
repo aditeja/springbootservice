@@ -26,7 +26,7 @@ public class StatisticsController {
      * Endpoint to Get statistics in constant time and space.
      * @return the response entity
      */
-    @RequestMapping(path = "/statistics", method = RequestMethod.GET)
+    @RequestMapping(path = "/statistics", method = RequestMethod.GET, produces = "application/json")
     public ResponseEntity<Statistics> getStatistics() {
         logger.info("In Statistics Controller method - getStatistics");
         Statistics statistics = statisticsService.getStatistics();

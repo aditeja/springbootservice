@@ -30,12 +30,21 @@ public class TransactionController {
     private TransactionService transactionService;
 
     /**
+     * Default health check.
+     * @return the response entity
+     */
+    @RequestMapping(path = "/")
+    public ResponseEntity<String> healthCheck() {
+            return new ResponseEntity<>("You are in Spring Boot Service", HttpStatus.OK);
+    }
+
+    /**
      * Endpoint to Add transaction.
      * @param transaction the transaction
      * @param ucBuilder   the uc builder
      * @return the response entity
      */
-    @RequestMapping(path = "/transaction", method = RequestMethod.POST)
+    @RequestMapping(path = "/", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<String> addTransaction(@RequestBody Transaction transaction, UriComponentsBuilder ucBuilder) {
 
         logger.info("In TransactionController method - createTransaction");
