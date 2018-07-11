@@ -1,9 +1,9 @@
 package com.springbootservice.controller;
 
-import com.springbootservice.util.SpringBootServiceUtil;
 import com.springbootservice.exception.SpringBootServiceException;
 import com.springbootservice.model.Transaction;
 import com.springbootservice.service.TransactionService;
+import com.springbootservice.util.SpringBootServiceUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,22 +24,19 @@ import java.util.UUID;
 @RestController
 public class TransactionController {
 
-    /**
-     * The constant logger.
-     */
-    public static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
+    private static final Logger logger = LoggerFactory.getLogger(TransactionController.class);
 
     @Autowired
     private TransactionService transactionService;
 
     /**
-     * Create transaction response entity.
+     * Endpoint to Add transaction.
      * @param transaction the transaction
      * @param ucBuilder   the uc builder
      * @return the response entity
      */
     @RequestMapping(path = "/transaction", method = RequestMethod.POST)
-    public ResponseEntity<?> addTransaction(@RequestBody Transaction transaction, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<String> addTransaction(@RequestBody Transaction transaction, UriComponentsBuilder ucBuilder) {
 
         logger.info("In TransactionController method - createTransaction");
         if(isTransactionValid(transaction)) {
@@ -54,7 +51,7 @@ public class TransactionController {
             }
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(ucBuilder.path("/transactions").buildAndExpand(transaction.getId()).toUri());
-            return new ResponseEntity<String>(headers, status);
+            return new ResponseEntity<>(headers, status);
         }else{
             throw new SpringBootServiceException("Invalid Transaction");
         }

@@ -67,10 +67,9 @@ public class StatisticsControllerTest {
 
     /**
      * Sets up.
-     * @throws Exception the exception
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(statisticsController)
                 .setControllerAdvice(new ExceptionControllerAdvice()).build();
@@ -78,6 +77,7 @@ public class StatisticsControllerTest {
 
     /**
      * Gets statistics test case 1.
+     * Testing Get statistics API
      * @throws Exception the exception
      */
     @SuppressWarnings("deprecation")

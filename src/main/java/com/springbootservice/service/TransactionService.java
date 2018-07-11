@@ -8,9 +8,8 @@ import com.springbootservice.model.Transaction;
 public interface TransactionService {
 
     /**
-     * Create transaction transaction.
+     * Add transaction to the Expiring Map.
      * @param transaction the transaction
-     * @return the transaction
      */
     void addTransaction(Transaction transaction);
 }

@@ -1,10 +1,10 @@
 package com.springbootservice.controller;
 
-import com.springbootservice.util.Constant;
+import com.google.gson.Gson;
 import com.springbootservice.exception.ExceptionControllerAdvice;
 import com.springbootservice.model.Transaction;
 import com.springbootservice.service.TransactionService;
-import com.google.gson.Gson;
+import com.springbootservice.util.Constant;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,8 +19,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -43,6 +41,12 @@ public class TransactionControllerTest {
     @InjectMocks
     private TransactionController transactionController;
 
+    /**
+     * Private stub to create new transaction.
+     * @param amount    the amount
+     * @param timestamp the timestamp
+     * @return the new transaction
+     */
     private Transaction getNewTransaction(Double amount, Long timestamp) {
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
@@ -50,14 +54,11 @@ public class TransactionControllerTest {
         return transaction;
     }
 
-    ;
-
     /**
      * Sets up.
-     * @throws Exception the exception
      */
     @Before
-    public void setUp() throws Exception {
+    public void setUp(){
         MockitoAnnotations.initMocks(this);
         this.mockMvc = MockMvcBuilders.standaloneSetup(transactionController)
                 .setControllerAdvice(new ExceptionControllerAdvice()).build();
@@ -65,6 +66,7 @@ public class TransactionControllerTest {
 
     /**
      * Create transaction test case 1.
+     * when transaction is within 60 sec.
      * @throws Exception the exception
      */
     @SuppressWarnings("deprecation")
@@ -73,7 +75,6 @@ public class TransactionControllerTest {
         Transaction transaction = getNewTransaction(amount, System.currentTimeMillis());
         Gson gson = new Gson();
         String json = gson.toJson(transaction);
-        when(transactionService.createTransaction(any(Transaction.class))).thenReturn(transaction);
         mockMvc.perform(post("/transaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
@@ -82,6 +83,7 @@ public class TransactionControllerTest {
 
     /**
      * Create transaction test case 2.
+     * when transaction is earlier than 60 sec.
      * @throws Exception the exception
      */
     @SuppressWarnings("deprecation")
@@ -90,7 +92,6 @@ public class TransactionControllerTest {
         Transaction transaction = getNewTransaction(amount, System.currentTimeMillis() - Constant.TIME_LIMIT);
         Gson gson = new Gson();
         String json = gson.toJson(transaction);
-        when(transactionService.createTransaction(any(Transaction.class))).thenReturn(transaction);
         mockMvc.perform(post("/transaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
@@ -99,6 +100,7 @@ public class TransactionControllerTest {
 
     /**
      * Create transaction test case 3.
+     * when transaction is empty
      * @throws Exception the exception
      */
     @SuppressWarnings("deprecation")
@@ -107,7 +109,6 @@ public class TransactionControllerTest {
         Transaction transaction = new Transaction();
         Gson gson = new Gson();
         String json = gson.toJson(transaction);
-        when(transactionService.createTransaction(any(Transaction.class))).thenReturn(transaction);
         mockMvc.perform(post("/transaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
@@ -116,6 +117,7 @@ public class TransactionControllerTest {
 
     /**
      * Create transaction test case 4.
+     * when timestamp is null
      * @throws Exception the exception
      */
     @SuppressWarnings("deprecation")
@@ -124,7 +126,6 @@ public class TransactionControllerTest {
         Transaction transaction = getNewTransaction(amount,null);
         Gson gson = new Gson();
         String json = gson.toJson(transaction);
-        when(transactionService.createTransaction(any(Transaction.class))).thenReturn(transaction);
         mockMvc.perform(post("/transaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
@@ -133,6 +134,7 @@ public class TransactionControllerTest {
 
     /**
      * Create transaction test case 5.
+     * when amount is null
      * @throws Exception the exception
      */
     @SuppressWarnings("deprecation")
@@ -141,7 +143,6 @@ public class TransactionControllerTest {
         Transaction transaction = getNewTransaction(null,System.currentTimeMillis());
         Gson gson = new Gson();
         String json = gson.toJson(transaction);
-        when(transactionService.createTransaction(any(Transaction.class))).thenReturn(transaction);
         mockMvc.perform(post("/transaction")
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))

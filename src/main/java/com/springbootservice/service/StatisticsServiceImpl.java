@@ -3,7 +3,6 @@ package com.springbootservice.service;
 import com.springbootservice.exception.SpringBootServiceException;
 import com.springbootservice.model.Statistics;
 import com.springbootservice.util.Constant;
-import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +21,7 @@ public class StatisticsServiceImpl implements StatisticsService {
     private TransactionServiceImpl transactionService;
 
     public Statistics getStatistics() {
-        logger.info("In StatisticsService method - getStatistics by currentTimeStamp");
+        logger.info("In StatisticsService method - getStatistics");
         try {
             return statistics;
         } catch (Exception ex) {
@@ -31,11 +30,12 @@ public class StatisticsServiceImpl implements StatisticsService {
         }
     }
 
+    /**
+     * Scheduler to Generate statistics for every instant set in
+     * SCHEDULER_POLLING_RATE_MILLS 1 millisecond by default.
+     */
     @Scheduled(fixedRate = Constant.SCHEDULER_POLLING_RATE_MILLS)
     private void generateStatistics() {
-        ExpiringMap map = transactionService.map;
-        statistics = new Statistics(map);
+        statistics = new Statistics(transactionService.map);
     }
-
-
 }

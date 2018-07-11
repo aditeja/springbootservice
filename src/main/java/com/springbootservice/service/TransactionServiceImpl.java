@@ -1,8 +1,8 @@
 package com.springbootservice.service;
 
-import com.springbootservice.util.Constant;
 import com.springbootservice.exception.SpringBootServiceException;
 import com.springbootservice.model.Transaction;
+import com.springbootservice.util.Constant;
 import net.jodah.expiringmap.ExpirationPolicy;
 import net.jodah.expiringmap.ExpiringMap;
 import org.slf4j.Logger;
@@ -18,7 +18,10 @@ import java.util.concurrent.TimeUnit;
 public class TransactionServiceImpl implements TransactionService {
 
     private static final Logger logger = LoggerFactory.getLogger(TransactionServiceImpl.class);
-    public ExpiringMap<Long, Double> map = ExpiringMap.builder().variableExpiration().build();
+    /**
+     * The Expiring Map that sets transactions to expire in 60 secs from its timestamp.
+     */
+    protected final ExpiringMap<Long, Double> map = ExpiringMap.builder().variableExpiration().build();
     public void addTransaction(Transaction transaction) {
         logger.info("In TransactionService method - createTransaction");
         try {

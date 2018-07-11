@@ -1,8 +1,8 @@
 package com.springbootservice.model;
 
-import com.springbootservice.util.Constant;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonRootName;
+import com.springbootservice.util.Constant;
 import org.springframework.http.HttpStatus;
 
 import java.time.LocalDateTime;

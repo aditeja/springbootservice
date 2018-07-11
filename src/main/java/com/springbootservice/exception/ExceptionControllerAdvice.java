@@ -1,9 +1,7 @@
 package com.springbootservice.exception;
 
-import com.springbootservice.util.Constant;
 import com.springbootservice.model.ApiError;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.springbootservice.util.Constant;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpStatus;
@@ -20,8 +18,6 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 @ControllerAdvice
 public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionControllerAdvice.class);
-
     /**
      * Exception handler for Exception.
      * @param ex the ex
@@ -29,20 +25,8 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     @ResponseBody
-    public ResponseEntity<?> exceptionHandler(Exception ex) {
+    public ResponseEntity<Object> exceptionHandler(Exception ex) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, ex);
-        return buildResponseEntity(apiError);
-    }
-
-    /**
-     * Exception handler for NoDataFoundException.
-     * @param ex the ex
-     * @return the response entity
-     */
-    @ExceptionHandler(NoDataFoundException.class)
-    @ResponseBody
-    public ResponseEntity<?> exceptionHandler(NoDataFoundException ex) {
-        ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, Constant.NO_DATA_FOUND_ERROR, ex);
         return buildResponseEntity(apiError);
     }
 
@@ -53,7 +37,7 @@ public class ExceptionControllerAdvice extends ResponseEntityExceptionHandler {
      */
     @ExceptionHandler(SpringBootServiceException.class)
     @ResponseBody
-    public ResponseEntity<?> exceptionHandler(SpringBootServiceException ex) {
+    public ResponseEntity<Object> exceptionHandler(SpringBootServiceException ex) {
         ApiError apiError = new ApiError(HttpStatus.INTERNAL_SERVER_ERROR, Constant.UNEXPECTED_ERROR, ex);
         return buildResponseEntity(apiError);
     }

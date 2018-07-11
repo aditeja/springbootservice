@@ -1,33 +1,26 @@
 package com.springbootservice.service;
 
-import com.springbootservice.exception.NoDataFoundException;
-import com.springbootservice.exception.SpringBootServiceException;
 import com.springbootservice.model.Statistics;
 import com.springbootservice.model.Transaction;
-import com.springbootservice.repository.TransactionRepository;
+import com.springbootservice.util.Constant;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.test.web.servlet.MockMvc;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertEquals;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.when;
 
 /**
  * The type Statistics service test.
  */
 @RunWith(SpringRunner.class)
 @SpringBootTest
-@AutoConfigureMockMvc
 public class StatisticsServiceTest {
 
     private static final Double amount = 12.3;
@@ -36,79 +29,57 @@ public class StatisticsServiceTest {
     private static final Double max = 12.3;
     private static final Double min = 12.3;
     private static final Long count = Long.valueOf(1);
-    private Long timestamp = System.currentTimeMillis();
+    private static final Long id = UUID.randomUUID().getMostSignificantBits();
     @Autowired
-    private MockMvc mockMvc;
-
-    @Mock
-    private TransactionRepository transactionRepository;
-
-    @InjectMocks
+    private TransactionService transactionService;
+    @Autowired
     private StatisticsServiceImpl statisticsService;
 
-    private Transaction getNewTransaction(Double amount, Long timestamp) {
+    /**
+     * Private stub to Get new transaction.
+     * @param id        the id
+     * @param amount    the amount
+     * @param timestamp the timestamp
+     * @return the new transaction
+     */
+    private Transaction getNewTransaction(Long id, Double amount, Long timestamp) {
         Transaction transaction = new Transaction();
+        transaction.setId(id);
         transaction.setAmount(amount);
         transaction.setTimestamp(timestamp);
         return transaction;
     }
 
-    ;
-
-    private Statistics getNewStatistics(Double sum, Double avg, Double max, Double min, Long count) {
-        Statistics statistics = new Statistics();
-        statistics.setSum(sum);
-        statistics.setAvg(avg);
-        statistics.setMax(max);
-        statistics.setMin(min);
-        statistics.setCount(count);
-        return statistics;
-    }
-
-    ;
-
-    private List<Transaction> getTempTransactions(Transaction transaction) {
-        List<Transaction> transactions = new ArrayList<>();
-        transactions.add(transaction);
-        return transactions;
+    /**
+     * Get statistics test case 1.
+     * when no transactions are present within 60sec.
+     */
+    @SuppressWarnings("deprecation")
+    @Test
+    public void getStatisticsTestCase1(){
+        Statistics statistics = statisticsService.getStatistics();
+        assertEquals(Double.valueOf(0), statistics.getAvg());
+        assertEquals(Double.valueOf(0), statistics.getSum());
+        assertEquals(Double.valueOf(0), statistics.getMax());
+        assertEquals(Double.valueOf(0), statistics.getMin());
+        assertEquals(Long.valueOf(0), statistics.getCount());
     }
 
     /**
-     * Gets statistics test case 1.
+     * Get statistics test case 2.
+     * when a transaction happens.
      * @throws Exception the exception
      */
     @SuppressWarnings("deprecation")
     @Test
-    public void getStatisticsTestCase1() throws Exception {
-        when(transactionRepository.findByTimestampGreaterThan(any(Long.class))).thenReturn(getTempTransactions
-                (getNewTransaction(amount, timestamp)));
+    public void getStatisticsTestCase2() throws Exception {
+        transactionService.addTransaction(getNewTransaction(id,amount,System.currentTimeMillis()));
+        TimeUnit.MILLISECONDS.sleep(1000);
         Statistics statistics = statisticsService.getStatistics();
         assertEquals(avg, statistics.getAvg());
         assertEquals(sum, statistics.getSum());
         assertEquals(max, statistics.getMax());
         assertEquals(min, statistics.getMin());
         assertEquals(count, statistics.getCount());
-    }
-
-    /**
-     * Gets statistics test case 2.
-     * @throws Exception the exception
-     */
-    @SuppressWarnings("deprecation")
-    @Test(expected = NoDataFoundException.class)
-    public void getStatisticsTestCase2() throws Exception {
-        when(transactionRepository.findByTimestampGreaterThan(any(Long.class))).thenReturn(new ArrayList<>());
-        Statistics statistics = statisticsService.getStatistics();
-    }
-
-    /**
-     * Gets statistics test case 3.
-     * @throws Exception the exception
-     */
-    @SuppressWarnings("deprecation")
-    @Test(expected = SpringBootServiceException.class)
-    public void getStatisticsTestCase3() throws Exception {
-        when(transactionRepository.findByTimestampGreaterThan(any(Long.class))).thenThrow(Exception.class);
-        Statistics statistics = statisticsService.getStatistics();
     }
 }

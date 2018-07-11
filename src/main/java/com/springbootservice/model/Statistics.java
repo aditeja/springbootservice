@@ -22,25 +22,15 @@ public class Statistics {
 
     /**
      * Instantiates a new Statistics.
-     * Returns statistics calculated from given transactions.
+     * Returns statistics calculated from transaction amounts in Expiring map.
      */
     public  Statistics(ExpiringMap<Long,Double> map) {
-        synchronized (map) {
-            final Long count = map.values().stream().count();
-            this.setCount(count);
-            Double defaultValue = Double.valueOf(0);
-            if (count > 0) {
-                this.setSum(map.values().stream().mapToDouble(Double::doubleValue).sum());
-                this.setAvg(map.values().stream().mapToDouble(Double::doubleValue).average().getAsDouble());
-                this.setMax(map.values().stream().max(Double::compareTo).get());
-                this.setMin(map.values().stream().min(Double::compareTo).get());
-            } else {
-                this.setSum(defaultValue);
-                this.setAvg(defaultValue);
-                this.setMax(defaultValue);
-                this.setMin(defaultValue);
-            }
-        }
+        this.setCount((long) map.values().size());
+        Double defaultValue = Double.valueOf(0);
+        this.setSum(map.values().stream().mapToDouble(Double::doubleValue).sum());
+        this.setAvg(map.values().stream().mapToDouble(Double::doubleValue).average().orElse(defaultValue));
+        this.setMax(map.values().stream().max(Double::compareTo).orElse(defaultValue));
+        this.setMin(map.values().stream().min(Double::compareTo).orElse(defaultValue));
     }
 
     /**
@@ -125,7 +115,7 @@ public class Statistics {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Statistics{");
+        final StringBuilder sb = new StringBuilder("Statistics{");
         sb.append("sum=").append(sum);
         sb.append(", avg=").append(avg);
         sb.append(", max=").append(max);
