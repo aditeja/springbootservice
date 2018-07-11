@@ -1,8 +1,8 @@
 # Spring Boot Service
 A high performance, low overhead, thread safe application that can handle concurrent requests.
 Features include:
- * [Post Transaction API](https://github.com/aditeja/springbootservice##Post-Transaction-API)
- * [Get Statistics API](https://github.com/aditeja/springbootservice##Get-Statistics-API)
+ * [Post Transaction API](https://github.com/aditeja/springbootservice#Post-Transaction-API)
+ * [Get Statistics API](https://github.com/aditeja/springbootservice#Get-Statistics-API)
  
 Supports JAVA 8+ since some streams are there for simplicity.
 ## Usage
@@ -57,4 +57,4 @@ Transactions data expires in `60 seconds` from time provided in transaction time
 
 Achieving O(1) is really challenging. This application has its shortcomings in very rare cases of concurrent modification which is handled as an exception.
 
-##Liscense
+##License
