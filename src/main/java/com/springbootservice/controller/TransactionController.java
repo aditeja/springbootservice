@@ -44,7 +44,7 @@ public class TransactionController {
      * @param ucBuilder   the uc builder
      * @return the response entity
      */
-    @RequestMapping(path = "/", method = RequestMethod.POST, consumes = "application/json")
+    @RequestMapping(path = "/transaction", method = RequestMethod.POST, consumes = "application/json")
     public ResponseEntity<String> addTransaction(@RequestBody Transaction transaction, UriComponentsBuilder ucBuilder) {
 
         logger.info("In TransactionController method - createTransaction");
