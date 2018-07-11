@@ -35,7 +35,7 @@ public class TransactionController {
      */
     @RequestMapping(path = "/")
     public ResponseEntity<String> healthCheck() {
-            return new ResponseEntity<>("You are in Spring Boot Service", HttpStatus.OK);
+            return new ResponseEntity<>("Spring Boot Service is up and Running", HttpStatus.OK);
     }
 
     /**
