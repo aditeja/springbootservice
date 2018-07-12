@@ -1,8 +1,8 @@
 # Spring Boot Service
 A high performance, low overhead, thread safe application that can handle concurrent requests.
 Features include:
- * [Post Transaction API](https://github.com/aditeja/springbootservice#Post-Transaction-API)
- * [Get Statistics API](https://github.com/aditeja/springbootservice#Get-Statistics-API)
+ * [Post Transaction API](https://github.com/aditeja/springbootservice#post-transaction-api)
+ * [Get Statistics API](https://github.com/aditeja/springbootservice#get-statistics-api)
  
 Supports JAVA 8+ since some streams are there for simplicity.
 ## Usage
